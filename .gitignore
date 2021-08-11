@@ -1,2 +1,4 @@
 bin
 fla/*.swf
+*.app
+dist
