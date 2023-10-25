@@ -1,5 +1,5 @@
 ﻿package {
-	import flash.display.*;	
+	import flash.display.*;
 	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -17,11 +17,11 @@
 		private var timer	:Timer = new Timer( 1000 );
 		private var focusLength: Number = 350;
 		public function TypoClock() {
-			this.generate();		
+			this.generate();
 			this.stage.addEventListener(MouseEvent.MOUSE_WHEEL, this.atStageMouseWheel);
 			this.stage.frameRate = 180;
-		}	
-		
+		}
+
 		private function atStageMouseWheel(e:MouseEvent):void {
 			if (e.delta > 0 ){
 				focusLength += 50;
@@ -33,8 +33,8 @@
 			this.addChild(this.wrap);
 			this.wrap.x = stage.stageWidth >> 1;
 			this.wrap.y = stage.stageHeight >> 1;
-			this.symbolsS = this.createItems("s", 60);			
-			this.symbolsM = this.createItems("m", 60);			
+			this.symbolsS = this.createItems("s", 60);
+			this.symbolsM = this.createItems("m", 60);
 			this.symbolsH = this.createItems("h", 24);
 			timer.addEventListener( TimerEvent.TIMER, _timerHandler );
 			timer.start();
@@ -46,7 +46,7 @@
 			var item:Number_mc;
 			for (var i:int = 0; i < pLength; i++) {
 				item = wrap.addChild(new Number_mc()) as Number_mc;
-				//_mc.cacheAsBitmap = true;				
+				//_mc.cacheAsBitmap = true;
 				// _mc.cacheAsBitmapMatrix = new Matrix;
 				item.sec_txt.text = i + "";
 				item.name = pName + i;
@@ -60,8 +60,8 @@
 			var min		:int = now.getMinutes() + 14;
 			var hour	:int = now.getHours() + 5;
 			var i		:uint = symbolsS.length;
-			var mc		:Number_mc;			
-			var _radian	:Number = 360 * Math.PI / 180;			
+			var mc		:Number_mc;
+			var _radian	:Number = 360 * Math.PI / 180;
 			while ( i-- ){
 				mc = symbolsS[ i ];
 				mc.tx = 4000 * Math.cos((( i - sec ) % 60 ) / 60 * _radian );
@@ -107,12 +107,12 @@
 		}
 		private function _tickHandler( e:Event ):void {
 			var _targetR:Number = 180 * stage.mouseX / stage.stageWidth;
-			wrap.rotation += ( _targetR - wrap.rotation ) * .05;			
-			wrap.alpha += ( 1 - wrap.alpha ) * .25;			
+			wrap.rotation += ( _targetR - wrap.rotation ) * .05;
+			wrap.alpha += ( 1 - wrap.alpha ) * .25;
 			this.updateSymbol(symbolsS, -90);
 			this.updateSymbol(symbolsM, -50);
 			this.updateSymbol(symbolsH, 20);
-			sortChildren(wrap, "tz", Array.DESCENDING);						
+			sortChildren(wrap, "tz", Array.DESCENDING);
 		}
 		private function updateSymbol(sympobs:Vector.<Number_mc>, y:Number): void{
 			var n 		:Number = sympobs.length;
@@ -121,7 +121,7 @@
 			var focus	:Number = this.focusLength;
 			while ( n-- ){
 				mc = sympobs[ n ];
-				pers = focus / (focus + mc.tz);	
+				pers = focus / (focus + mc.tz);
 				pers = pers > 0 ? pers : 0;
 				mc.x += ( mc.tx * pers - mc.x ) * 0.3;
 				mc.y += ( mc.ty * pers - mc.y ) * 0.3 + y;
@@ -133,15 +133,15 @@
 		public static function sortChildren(pContainer:Sprite, pCriteria:String , pDescending:int = 0):void {
 			var _numChildren:int = pContainer.numChildren;
 			if( _numChildren < 2 ) return ;
-			
-			
+
+
 			var _childrenArray:Array = new Array( _numChildren );
 			var i:int = -1;
 			while( ++i < _numChildren )	{
 				_childrenArray[i] = pContainer.getChildAt(i);
 			}
-			_childrenArray.sortOn(pCriteria, Array.NUMERIC | pDescending);			
-			
+			_childrenArray.sortOn(pCriteria, Array.NUMERIC | pDescending);
+
 			var _child:DisplayObject;
 			i = -1;
 			while( ++i < _numChildren )	{
@@ -164,27 +164,27 @@ class CircleMC extends Sprite {
 	public var ty:int;
 	public var tz:int;
 	public var ta:Number = 1;
-	
+
 	public var sec_txt:TextField;
 	public function CircleMC() {
-		
-		
-		
+
+
+
 		var shape:Shape = new Shape();
 		shape.graphics.beginFill(0xffff00);
 		shape.graphics.drawCircle(0, 0, 40);
-	
+
 		this.addChild( shape );
-		
-		
+
+
 		sec_txt = new TextField();
-		
+
 		var tf:TextFormat = new TextFormat( "Arial", 30 );
 		sec_txt.setTextFormat( tf );
 		sec_txt.embedFonts = true;
 		this.addChild( sec_txt );
 		//shape.graphics.
 	}
-	
+
 }
 */

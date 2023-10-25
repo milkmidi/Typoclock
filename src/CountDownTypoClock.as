@@ -1,5 +1,5 @@
 ﻿package {
-	import flash.display.*;	
+	import flash.display.*;
 	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -12,14 +12,15 @@
 	public class CountDownTypoClock extends Sprite {
 		private static const FOCUS_SCALE:Number = 2;
 		private static const UNFOCUS_OPACITY:Number = 0.15;
+		private static const radian	:Number = 360 * Math.PI / 180;
 		private var symbolsS:Vector.<Number_mc>;
 		private var symbolsM:Vector.<Number_mc>;
-		private var symbolsH:Vector.<Number_mc>;
+		// private var symbolsH:Vector.<Number_mc>;
 		private var wrap	:Sprite = new Sprite();
 		private var timer	:Timer = new Timer(1000);
 		private var focusLength: Number = 450;
 		private var countDownValue: Number = 60 * 10; // 10 min;
-		private static const radian	:Number = 360 * Math.PI / 180;
+		private var theme = 'dark';
 		public function CountDownTypoClock() {
 			this.generate();
 			this.stage.frameRate = 180;
@@ -49,8 +50,28 @@
 					}
 				}
 			});
-		}	
-		
+			this.stage.addEventListener(MouseEvent.CLICK, toggleTheme);
+			this.toggleTheme(null);
+		}
+
+		private function toggleTheme(e: MouseEvent) {
+			var originColor = this.stage.color;
+			if( this.theme === 'dark' ) {
+				this.theme = 'light';
+				this.stage.color = 0xf5f6fa;
+			} else {
+				this.theme = 'dark';
+				this.stage.color = 0x222222;
+			}
+
+			this.symbolsS.forEach(function(item) {
+				item.sec_txt.textColor = originColor;
+			});
+			this.symbolsM.forEach(function(item) {
+				item.sec_txt.textColor = originColor;
+			});
+		}
+
 		private function atStageMouseWheel(e:MouseEvent):void {
 			if (e.delta > 0 ){
 				focusLength += 50;
@@ -71,7 +92,7 @@
 			var item:Number_mc;
 			for (var i:int = 0; i < pLength; i++) {
 				item = wrap.addChild(new Number_mc()) as Number_mc;
-				item.cacheAsBitmap = true;				
+				item.cacheAsBitmap = true;
 				//item.cacheAsBitmapMatrix = new Matrix;
 				item.sec_txt.text = (i + pIncrement) + "";
 				//item.name = pName + i;
@@ -141,12 +162,12 @@
 			var targetRotation:Number = 180 * (stage.mouseX / stage.stageWidth);
 			targetRotation = clamp(170, 10, targetRotation);
 			//trace(targetRotation);
-			wrap.rotation += ( targetRotation - wrap.rotation ) * .05;			
-			wrap.alpha += ( 1 - wrap.alpha ) * .25;			
+			wrap.rotation += ( targetRotation - wrap.rotation ) * .05;
+			wrap.alpha += ( 1 - wrap.alpha ) * .25;
 			this.updateSymbol(symbolsS, -90);
 			this.updateSymbol(symbolsM, 0);
 			//this.updateSymbol(symbolsH, 20);
-			sortChildren(wrap, "tz", Array.DESCENDING);						
+			sortChildren(wrap, "tz", Array.DESCENDING);
 		}
 		private function updateSymbol(sympobs:Vector.<Number_mc>, y:Number): void{
 			var n 		:Number = sympobs.length;
@@ -155,7 +176,7 @@
 			var focus	:Number = this.focusLength;
 			while (n--){
 				mc = sympobs[n];
-				pers = focus / (focus + mc.tz);	
+				pers = focus / (focus + mc.tz);
 				pers = pers > 0 ? pers : 0;
 				mc.x += ( mc.tx * pers - mc.x ) * 0.3;
 				mc.y += ( mc.ty * pers - mc.y ) * 0.3 + y;
@@ -166,15 +187,15 @@
 		}
 		public static function sortChildren(pContainer:Sprite, pCriteria:String , pDescending:int = 0):void {
 			var _numChildren:int = pContainer.numChildren;
-			if( _numChildren < 2 ) return;			
-			
+			if( _numChildren < 2 ) return;
+
 			var _childrenArray:Array = new Array(_numChildren);
 			var i:int = -1;
 			while( ++i < _numChildren )	{
 				_childrenArray[i] = pContainer.getChildAt(i);
 			}
 			_childrenArray.sortOn(pCriteria, Array.NUMERIC | pDescending);
-			
+
 			var _child:DisplayObject;
 			i = -1;
 			while( ++i < _numChildren )	{
